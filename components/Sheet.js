@@ -17,7 +17,7 @@ export default class Sheet extends React.Component {
     };
   }
   componentWillReceiveProps(newProps) {
-    return Animated.timing(translateY, {
+    return Animated.timing(this.state.translateY, {
         toValue: newProps.visible ? 0 : DEFAULT_BOTTOM,
         duration: DEFAULT_ANIMATE_TIME,
         useNativeDriver: true
