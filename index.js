@@ -83,16 +83,18 @@ class ShareSheet extends React.Component {
     });
   }
   render(){
+    const { onCancel, visible, sheetHeight, children } = this.props;
+
     return (
-      <Overlay visible={this.props.visible} {...this.props}>
+      <Overlay visible={visible} {...this.props}>
         <View style={styles.actionSheetContainer}>
           <TouchableOpacity
               style={{flex:1}}
-              onPress={this.props.onCancel}>
+              onPress={onCancel}>
           </TouchableOpacity>
-          <Sheet visible={this.props.visible}>
+          <Sheet visible={visible} sheetHeight={sheetHeight}>
             <View style={styles.buttonContainer}>
-              {this.props.children}
+              {children}
             </View>
           </Sheet>
         </View>
