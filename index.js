@@ -8,23 +8,19 @@ import {
   NativeModules,
   Platform,
   ActionSheetIOS,
-  Dimensions
 } from 'react-native';
 
 import Overlay from './components/Overlay';
 import Sheet from './components/Sheet';
 import Button from './components/Button';
 
-const { height, width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     actionSheetContainer: {
-      ...StyleSheet.absoluteFillObject,
-      height,
-      width,
-      position: 'absolute',
-      zIndex: 10,
-      backgroundColor: 'red'
-      // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      flex: 1,
+      paddingTop: 10,
+      paddingBottom: 0,
+      justifyContent: "flex-end",
+      backgroundColor: 'transparent',
     },
     buttonContainer: {
       overflow: 'hidden',
@@ -78,14 +74,16 @@ class RNShare {
 }
 class ShareSheet extends React.Component {
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress',() => {
-      if (this.props.visible) {
-        this.props.onCancel();
-        return true;
-      }
-      return false;
-    });
+    BackHandler.addEventListener('hardwareBackPress',
+      () => {
+        if (this.props.visible) {
+          this.props.onCancel();
+          return true;
+        }
+        return false;
+      });
   }
+    
   render(){
     const { onCancel, visible, sheetHeight, children } = this.props;
 
@@ -93,7 +91,7 @@ class ShareSheet extends React.Component {
       <Overlay visible={visible} {...this.props}>
         <View style={styles.actionSheetContainer}>
           <TouchableOpacity
-              style={{flex:1}}
+            style={{flex:1}}
               onPress={onCancel}>
           </TouchableOpacity>
           <Sheet visible={visible} sheetHeight={sheetHeight}>
