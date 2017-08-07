@@ -13,19 +13,21 @@ export default class Sheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      bottom: new Animated.Value(DEFAULT_BOTTOM)
+      translateY: new Animated.Value(DEFAULT_BOTTOM)
     };
   }
   componentWillReceiveProps(newProps) {
-    return Animated.timing(this.state.bottom, {
+    return Animated.timing(translateY, {
         toValue: newProps.visible ? 0 : DEFAULT_BOTTOM,
-        duration: DEFAULT_ANIMATE_TIME
+        duration: DEFAULT_ANIMATE_TIME,
+        useNativeDriver: true
     }).start();
   }
 
   render() {
+    const { translateY } = this.state;
     return (
-      <Animated.View style={{bottom: this.state.bottom}}>
+      <Animated.View style={{ transform: [{ translateY }]}}>
           {this.props.children}
       </Animated.View>
     );
