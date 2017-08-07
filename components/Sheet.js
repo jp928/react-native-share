@@ -1,24 +1,23 @@
 import React from 'react';
 import {
   Animated,
-  StyleSheet,
-  View,
-  Dimensions
+  View
 } from 'react-native';
 
-const DEFAULT_BOTTOM = -300;
 const DEFAULT_ANIMATE_TIME = 300;
 
 export default class Sheet extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      translateY: new Animated.Value(DEFAULT_BOTTOM)
+      translateY: new Animated.Value(0),
+      sheetHeight: -parseInt(props.sheetHeight, 10) || -200
     };
   }
   componentWillReceiveProps(newProps) {
-    return Animated.timing(this.state.translateY, {
-        toValue: newProps.visible ? 0 : DEFAULT_BOTTOM,
+    const { translateY, sheetHeight } = this.state;
+    return Animated.timing(translateY, {
+        toValue: newProps.visible ? sheetHeight : 0,
         duration: DEFAULT_ANIMATE_TIME,
         useNativeDriver: true
     }).start();
