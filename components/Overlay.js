@@ -43,7 +43,8 @@ export default class Overlay extends React.Component {
     }
     return Animated.timing(this.state.fadeAnim, {
         toValue: newProps.visible ? 1 : 0,
-        duration: DEFAULT_ANIMATE_TIME
+        duration: DEFAULT_ANIMATE_TIME,
+        useNativeDriver: true
     }).start(this.onAnimatedEnd.bind(this));
   }
   render() {
