@@ -3,25 +3,23 @@ import {
   Animated,
   StyleSheet,
   View,
-  Dimensions,
   TouchableHighlight
 } from 'react-native';
 
-const DEFAULT_ANIMATE_TIME = 300;
+const DEFAULT_ANIMATE_TIME = 100;
 const styles = StyleSheet.create({
     fullOverlay: {
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'transparent',
-        position: 'absolute'
+      ...StyleSheet.absoluteFillObject,
+      position: 'absolute',
+      zIndex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      elevation: 2,
     },
     emptyOverlay: {
-        width: 0,
-        height: 0,
-        backgroundColor: 'transparent',
-        position: 'absolute'
+      width: 0,
+      height: 0,
+      backgroundColor: 'transparent',
+      position: 'absolute'
     }
 });
 export default class Overlay extends React.Component {

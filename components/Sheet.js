@@ -11,15 +11,15 @@ export default class Sheet extends React.Component {
     super(props);
     this.state = {
       translateY: new Animated.Value(0),
-      sheetHeight: -parseInt(props.sheetHeight, 10) || -200
+      sheetHeight: parseInt(props.sheetHeight, 10) || 350
     };
   }
   componentWillReceiveProps(newProps) {
     const { translateY, sheetHeight } = this.state;
     return Animated.timing(translateY, {
-        toValue: newProps.visible ? sheetHeight : 0,
-        duration: DEFAULT_ANIMATE_TIME,
-        useNativeDriver: true
+      toValue: newProps.visible ? 0 : sheetHeight,
+      duration: DEFAULT_ANIMATE_TIME,
+      useNativeDriver: true
     }).start();
   }
 

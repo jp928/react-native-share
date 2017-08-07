@@ -8,19 +8,23 @@ import {
   NativeModules,
   Platform,
   ActionSheetIOS,
+  Dimensions
 } from 'react-native';
 
 import Overlay from './components/Overlay';
 import Sheet from './components/Sheet';
 import Button from './components/Button';
 
+const { height, width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     actionSheetContainer: {
-      flex: 1,
-      paddingTop: 10,
-      paddingBottom: 0,
-      justifyContent: "flex-end",
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      ...StyleSheet.absoluteFillObject,
+      height,
+      width,
+      position: 'absolute',
+      zIndex: 10,
+      backgroundColor: 'red'
+      // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     buttonContainer: {
       overflow: 'hidden',
