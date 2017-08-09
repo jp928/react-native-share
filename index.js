@@ -85,6 +85,20 @@ class RNShare {
       throw new Exception("not implemented");
     }
   }
+
+  static getShareableAppList(options){
+    if (Platform.OS === "ios" || Platform.OS === "android") {
+      return new Promise((resolve, reject) => {
+        NativeModules.RNShare.getShareableAppList((list) => {
+          return resolve({
+            appList: list
+          });
+        });
+      });
+    } else {
+      throw new Exception("not implemented");
+    }
+  }
 }
 class ShareSheet extends React.Component {
   componentDidMount() {

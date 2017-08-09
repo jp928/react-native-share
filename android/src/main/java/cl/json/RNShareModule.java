@@ -16,6 +16,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.WritableNativeArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,8 +26,10 @@ import cl.json.social.EmailShare;
 import cl.json.social.FacebookShare;
 import cl.json.social.GenericShare;
 import cl.json.social.GooglePlusShare;
+import cl.json.social.LinkedInShare;
 import cl.json.social.ShareIntent;
 import cl.json.social.TwitterShare;
+import cl.json.social.WeChatShare;
 import cl.json.social.WhatsAppShare;
 
 public class RNShareModule extends ReactContextBaseJavaModule {
@@ -42,6 +45,8 @@ public class RNShareModule extends ReactContextBaseJavaModule {
         sharesExtra.put("whatsapp",new WhatsAppShare(this.reactContext));
         sharesExtra.put("googleplus",new GooglePlusShare(this.reactContext));
         sharesExtra.put("email",new EmailShare(this.reactContext));
+        sharesExtra.put("linkedin", new LinkedInShare(this.reactContext));
+        sharesExtra.put("wechat", new WeChatShare(this.reactContext));
         //  add more customs single intent shares here
     }
 
@@ -74,7 +79,6 @@ public class RNShareModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void shareSingle(ReadableMap options, @Nullable Callback failureCallback, @Nullable Callback successCallback) {
-        System.out.println("SHARE SINGLE METHOD");
         if (ShareIntent.hasValidKey("social", options) ) {
             try{
                 this.sharesExtra.get(options.getString("social")).open(options);
@@ -123,7 +127,22 @@ public class RNShareModule extends ReactContextBaseJavaModule {
             }
         });
 
-
         shareList.show(manager);
+    }
+
+    @ReactMethod
+    public void getShareableAppList(Callback successCallback) {
+        List<ResolveInfo> activities = this.getShareApps();
+        WritableNativeArray appNames = new WritableNativeArray();
+
+        for (int i=0; i<activities.size(); i++) {
+            appNames.pushString(activities.get(i)
+                    .activityInfo.packageName);
+        }
+
+        if(successCallback != null) {
+            successCallback.invoke(appNames);
+        }
+
     }
 }
