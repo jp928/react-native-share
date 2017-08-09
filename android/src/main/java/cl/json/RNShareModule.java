@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -93,7 +94,14 @@ public class RNShareModule extends ReactContextBaseJavaModule {
 
         List<ResolveInfo> activities = this.getShareApps();
 
-        ShareActionListDialogFragment shareList = ShareActionListDialogFragment.newInstance(activities);
+        Typeface fontFace;
+        try {
+            fontFace = Typeface.createFromAsset(getReactApplicationContext().getAssets(), "fonts/Avenir-Medium.ttf");
+        } catch (Exception e) {
+            fontFace = Typeface.DEFAULT;
+        }
+        
+        ShareActionListDialogFragment shareList = ShareActionListDialogFragment.newInstance(activities, fontFace);
 
         shareList.setActionSheetListener(new ShareActionListDialogFragment.ShareActionSheetListener() {
             @Override

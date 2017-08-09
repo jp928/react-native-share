@@ -2,6 +2,8 @@ package cl.json;
 
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -28,22 +30,26 @@ public class ShareActionListDialogFragment extends BottomSheetDialogFragment {
     private static ArrayList<ResolveInfo> arrayListOfApps;
     private static final String SHAREABLE_APP_LIST = "shareable_app_list";
     private ShareActionSheetListener mListener;
+    private static Typeface mFontFace;
 
     public static ArrayList<ResolveInfo> getArrayListOfApps() {
         return arrayListOfApps;
     }
 
-    public static ShareActionListDialogFragment newInstance(List<ResolveInfo> shareableApps) {
+    public static ShareActionListDialogFragment newInstance(List<ResolveInfo> shareableApps, Typeface fontFace) {
         final ShareActionListDialogFragment fragment = new ShareActionListDialogFragment();
         final Bundle args = new Bundle();
 
         arrayListOfApps = new ArrayList<>(shareableApps.size());
         arrayListOfApps.addAll(shareableApps);
 
+        mFontFace = fontFace;
+
         args.putParcelableArrayList(SHAREABLE_APP_LIST, arrayListOfApps);
         fragment.setArguments(args);
         return fragment;
     }
+
 
     public void show(FragmentManager fragmentManager) {
         Fragment fragment = fragmentManager.findFragmentByTag(TAG);
@@ -68,12 +74,19 @@ public class ShareActionListDialogFragment extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         final RecyclerView recyclerView = (RecyclerView) view;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new ShareActionAdapter(getArguments().getParcelableArrayList(SHAREABLE_APP_LIST)));
 
-        LinearLayoutManager layoutManager
-                = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(
+                new ShareActionAdapter(
+                    getArguments().getParcelableArrayList(SHAREABLE_APP_LIST),
+                    ShareActionListDialogFragment.mFontFace
+                )
+        );
+
+//        LinearLayoutManager layoutManager
+//                = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -88,10 +101,11 @@ public class ShareActionListDialogFragment extends BottomSheetDialogFragment {
         final ImageView icon;
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
-            // TODO: Customize the item layout
+
             super(inflater.inflate(R.layout.fragment_shareaction_list_dialog_item, parent, false));
             text = (TextView) itemView.findViewById(R.id.text);
             icon = (ImageView) itemView.findViewById(R.id.icon);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,9 +123,11 @@ public class ShareActionListDialogFragment extends BottomSheetDialogFragment {
     private class ShareActionAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private final ArrayList<Parcelable> mShareableAppArrayList;
+        private Typeface mFontFace;
 
-        ShareActionAdapter(ArrayList<Parcelable> shareableAppArrayList) {
+        ShareActionAdapter(ArrayList<Parcelable> shareableAppArrayList, Typeface fontFace) {
             mShareableAppArrayList = shareableAppArrayList;
+            mFontFace = fontFace;
         }
 
         @Override
@@ -124,6 +140,7 @@ public class ShareActionListDialogFragment extends BottomSheetDialogFragment {
             ResolveInfo resolverInfo = (ResolveInfo) mShareableAppArrayList.get(position);
             PackageManager pm = getContext().getPackageManager();
             holder.text.setText(resolverInfo.loadLabel(pm).toString());
+            holder.text.setTypeface(mFontFace);
             holder.icon.setImageDrawable(resolverInfo.loadIcon(pm));
         }
 
