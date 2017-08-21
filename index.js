@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
       flex: 1,
       paddingTop: 10,
       paddingBottom: 0,
-      justifyContent: "flex-end",
+      justifyContent: 'flex-end',
       backgroundColor: 'transparent',
     },
     buttonContainer: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 class RNShare {
   static open(options) {
     return new Promise((resolve, reject) => {
-      if (Platform.OS === "ios") {
+      if (Platform.OS === 'ios') {
         ActionSheetIOS.showShareActionSheetWithOptions(options, (error) => {
           return reject({ error: error });
         }, (success, activityType) => {
@@ -42,7 +42,7 @@ class RNShare {
               app: activityType
             });
           } else {
-            reject({ error: "User did not share" });
+            reject({ error: 'User did not share' });
           }
         });
       } else {
@@ -57,7 +57,7 @@ class RNShare {
     });
   }
   static shareSingle(options){
-    if (Platform.OS === "ios" || Platform.OS === "android") {
+    if (Platform.OS === 'ios' || Platform.OS === 'android') {
       return new Promise((resolve, reject) => {
         NativeModules.RNShare.shareSingle(options,(e) => {
           return reject({ error: e });
@@ -68,12 +68,12 @@ class RNShare {
         });
       });
     } else {
-      throw new Exception("not implemented");
+      throw new Exception('not implemented');
     }
   }
   
   static showShareView(options){
-    if (Platform.OS === "ios" || Platform.OS === "android") {
+    if (Platform.OS === 'ios' || Platform.OS === 'android') {
       return new Promise((resolve, reject) => {
         NativeModules.RNShare.showShareView(options, (e) => {
           return resolve({
@@ -82,12 +82,12 @@ class RNShare {
         });
       });
     } else {
-      throw new Exception("not implemented");
+      throw new Exception('not implemented');
     }
   }
 
   static getShareableAppList(options){
-    if (Platform.OS === "ios" || Platform.OS === "android") {
+    if (Platform.OS === 'android') {
       return new Promise((resolve, reject) => {
         NativeModules.RNShare.getShareableAppList((list) => {
           return resolve({
@@ -96,20 +96,22 @@ class RNShare {
         });
       });
     } else {
-      throw new Exception("not implemented");
+      throw new Exception('not implemented');
     }
   }
 }
 class ShareSheet extends React.Component {
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress',
-      () => {
-        if (this.props.visible) {
-          this.props.onCancel();
-          return true;
-        }
-        return false;
-      });
+    if(Platform.OS === 'android') {
+      BackHandler.addEventListener('hardwareBackPress',
+        () => {
+          if (this.props.visible) {
+            this.props.onCancel();
+            return true;
+          }
+          return false;
+        });
+    }
   }
     
   render(){

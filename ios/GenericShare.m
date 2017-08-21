@@ -66,6 +66,12 @@
           NSString *URL = [NSString stringWithFormat:@"https://www.facebook.com/sharer/sharer.php?u=%@", options[@"url"]];
           [self openScheme:URL];
         }
+          
+        //LinkedIn https://www.linkedin.com/shareArticle?mini=true&
+        if ([options[@"social"] isEqualToString:@"linkedin"]) {
+            NSString *URL = [NSString stringWithFormat:@"ttps://www.linkedin.com/shareArticle?mini=true&url=%@", options[@"url"]];
+            [self openScheme:URL];
+        }
 
       }
   }
