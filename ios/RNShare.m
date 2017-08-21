@@ -62,9 +62,6 @@ RCT_EXPORT_METHOD(shareSingle:(NSDictionary *)options
         if([social isEqualToString:@"facebook"]) {
             GenericShare *shareCtl = [[GenericShare alloc] init];
             [shareCtl shareSingle:options failureCallback: failureCallback successCallback: successCallback serviceType: SLServiceTypeFacebook];
-        } else if([social isEqualToString:@"linkedin"]) {
-            GenericShare *shareCtl = [[GenericShare alloc] init];
-            [shareCtl shareSingle:options failureCallback: failureCallback successCallback: successCallback serviceType: SLServiceTypeLinkedIn];
         } else if([social isEqualToString:@"twitter"]) {
             GenericShare *shareCtl = [[GenericShare alloc] init];
             [shareCtl shareSingle:options failureCallback: failureCallback successCallback: successCallback serviceType: SLServiceTypeTwitter];
